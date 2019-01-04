@@ -29,12 +29,14 @@ namespace RestApiExercise.Services
         {
             var docId = new ObjectId(id);
 
-            return _customers.Find<Customer>(customer => customer._id == docId).FirstOrDefault();
+            return _customers.Find<Customer>(customer => customer.Id.Equals(docId)).FirstOrDefault();
         }
 
         public Customer Create(Customer customer)
         {
+            customer.Id = ObjectId.GenerateNewId().ToString();
             _customers.InsertOne(customer);
+
             return customer;
         }
 
@@ -42,17 +44,12 @@ namespace RestApiExercise.Services
         {
             var docId = new ObjectId(id);
 
-            _customers.ReplaceOne(customer => customer._id == docId, updatedCustomer);
-        }
-
-        public void Remove(Customer targetCustomer)
-        {
-            _customers.DeleteOne(customer => customer._id == targetCustomer._id);
+            _customers.ReplaceOne(customer => customer.Id.Equals(docId), updatedCustomer);
         }
 
         public void Remove(ObjectId id)
         {
-            _customers.DeleteOne(customer => customer._id == id);
+            _customers.DeleteOne(customer => customer.Id.Equals(id));
         }
     }
 }
