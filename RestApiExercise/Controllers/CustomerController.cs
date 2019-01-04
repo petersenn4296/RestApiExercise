@@ -75,12 +75,14 @@ namespace RestApiExercise.Controllers
 
             if (customerExists == null)
             {
-                return NotFound();
+                var newCustomer = _customerService.Create(customer);
+
+                return Ok(newCustomer);
             }
 
             _customerService.Update(id, customer);
 
-            return NoContent();
+            return Ok(customer);
         }
 
         /// <summary>
